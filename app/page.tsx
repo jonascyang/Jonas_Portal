@@ -1,6 +1,6 @@
+import Link from 'next/link';
 import { Github, Twitter, Mail, Linkedin } from 'lucide-react';
 import NotionRenderer from '@/components/NotionRenderer';
-import UniversalLinkHandler from '@/components/UniversalLinkHandler';
 import { getLatestInsight, getUpdates, type NotionPage } from '@/lib/notion';
 
 const NOTION_PAGE_ID = process.env.NOTION_PAGE_ID || '';
@@ -115,29 +115,23 @@ export default async function Home() {
           <div className="space-y-4">
             {updates.length > 0 ? (
               updates.map((update) => (
-                <div
+                <Link
                   key={update.id}
-                  className="border border-border p-4 space-y-3"
+                  href={`/updates/${update.id}`}
+                  className="group block border border-border p-4 space-y-3 transition-colors hover:bg-text hover:text-background"
                 >
                   <h3 className="font-bold">{update.title}</h3>
-                  <p className="text-xs text-text/60">
+                  <p className="text-xs text-text/60 group-hover:text-background/70">
                     {new Date(update.date).toLocaleDateString('en-US', {
                       year: 'numeric',
                       month: 'short',
                       day: 'numeric',
                     })}
                   </p>
-                  <span className="text-xs border border-border px-2 py-1 inline-block">
+                  <span className="text-xs border border-border px-2 py-1 inline-block group-hover:border-background">
                     {update.type}
                   </span>
-                  {update.link && (
-                    <UniversalLinkHandler
-                      url={update.link}
-                      embedMode={update.embedMode}
-                      label="Visit Source"
-                    />
-                  )}
-                </div>
+                </Link>
               ))
             ) : (
               <p className="text-text/60">No updates available yet.</p>

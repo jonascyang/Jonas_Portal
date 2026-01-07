@@ -129,6 +129,11 @@ export async function getUpdates(pageId: string): Promise<NotionPage[]> {
   return items.filter(item => item.type === 'Update');
 }
 
+export async function getUpdateById(pageId: string, id: string): Promise<NotionPage | null> {
+  const updates = await getUpdates(pageId);
+  return updates.find(item => item.id === id) || null;
+}
+
 export async function getLatestInsight(pageId: string): Promise<NotionPage | null> {
   const insights = await getInsights(pageId);
   return insights.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())[0] || null;
