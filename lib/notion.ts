@@ -40,8 +40,17 @@ export async function getNotionData(pageId: string) {
         const collection = recordMap.collection[collectionId];
         const schema = collection.value.schema;
 
+        // Build a mapping from property names to their internal IDs
+        const propMap: Record<string, string> = {};
+        Object.entries(schema).forEach(([id, prop]: [string, any]) => {
+          propMap[prop.name] = id;
+        });
+
+        const publishedPropId = propMap['Published'];
+        const typePropId = propMap['Type'];
+        const datePropId = propMap['Date'];
+
         // Get all rows in the collection
-        const collectionRows = (recordMap as any).collection_view?.[viewId]?.format?.collection_pointer;
         if (recordMap.block) {
           for (const [blockId, block] of Object.entries(recordMap.block)) {
             const blockValue = (block as any).value;
@@ -49,16 +58,27 @@ export async function getNotionData(pageId: string) {
               // Extract properties from the block
               const properties = blockValue.properties || {};
 
-              // Check if published
-              const published = properties['Published']?.[0]?.[0] === 'Yes';
+              // Check if published - checkbox is true if it exists and is checked
+              const published = publishedPropId ? properties[publishedPropId]?.[0]?.[0] === 'Yes' : true;
 
               // Get type
-              const typeRaw = properties['Type']?.[0]?.[0] || '';
-              const type = typeRaw.includes('Insight') ? 'Insight' : 'Update';
+              let type: 'Insight' | 'Update' = 'Update';
+              if (typePropId) {
+                const typeRaw = properties[typePropId]?.[0]?.[0] || '';
+                type = typeRaw.includes('Insight') ? 'Insight' : 'Update';
+              }
 
-              // Get title and date
+              // Get title
               const title = properties['title']?.[0]?.[0] || 'Untitled';
-              const date = properties['Date']?.[0]?.[1]?.[0]?.[0] || new Date().toISOString();
+
+              // Get date (use created time if no date property)
+              let date = new Date().toISOString();
+              if (datePropId && properties[datePropId]) {
+                const dateVal = properties[datePropId]?.[0]?.[1]?.[0]?.[0];
+                if (dateVal) date = dateVal;
+              } else if (blockValue.created_time) {
+                date = new Date(blockValue.created_time).toISOString();
+              }
 
               if (published) {
                 items.push({
