@@ -4,6 +4,7 @@ import UniversalLinkHandler from '@/components/UniversalLinkHandler';
 import { getLatestInsight, getUpdates, type NotionPage } from '@/lib/notion';
 
 const NOTION_PAGE_ID = process.env.NOTION_PAGE_ID || '';
+export const dynamic = 'force-dynamic';
 
 export default async function Home() {
   // Fetch data from Notion (with fallback for missing env var)
