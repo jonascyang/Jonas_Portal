@@ -1,0 +1,172 @@
+/* Override default Notion styles to match terminal theme */
+
+.notion-renderer {
+  --bg-page: transparent;
+  --bg-text: transparent;
+  --notion-font: 'IBM Plex Mono', monospace;
+}
+
+.notion-page {
+  font-family: 'IBM Plex Mono', monospace !important;
+}
+
+.notion {
+  font-family: 'IBM Plex Mono', monospace !important;
+  color: #EDEDED !important;
+}
+
+/* Headings */
+.notion-header,
+.notion-title,
+.notion-h1,
+.notion-h2,
+.notion-h3 {
+  font-family: 'IBM Plex Mono', monospace !important;
+  color: #EDEDED !important;
+  font-weight: 600 !important;
+  border-radius: 0 !important;
+}
+
+.notion-h1 {
+  font-size: 1.5rem !important;
+  border-bottom: 1px solid #333333 !important;
+  padding-bottom: 0.5rem !important;
+  margin-bottom: 1rem !important;
+}
+
+.notion-h2 {
+  font-size: 1.25rem !important;
+}
+
+.notion-h3 {
+  font-size: 1.1rem !important;
+}
+
+/* Paragraphs */
+.notion-text {
+  color: #EDEDED !important;
+  line-height: 1.6 !important;
+}
+
+/* Links */
+.notion-link {
+  color: #EDEDED !important;
+  text-decoration: underline !important;
+  text-decoration-color: #333333 !important;
+  transition: text-decoration-color 0.2s ease !important;
+}
+
+.notion-link:hover {
+  text-decoration-color: #EDEDED !important;
+}
+
+/* Lists */
+.notion-list,
+.notion-list-item {
+  color: #EDEDED !important;
+}
+
+.notion-list-item::before {
+  color: #EDEDED !important;
+}
+
+/* Code blocks */
+.notion-code {
+  background: #0a0a0a !important;
+  border: 1px solid #333333 !important;
+  border-radius: 0 !important;
+  color: #EDEDED !important;
+  font-family: 'IBM Plex Mono', monospace !important;
+  padding: 1rem !important;
+}
+
+.notion-inline-code {
+  background: #0a0a0a !important;
+  border: 1px solid #333333 !important;
+  border-radius: 0 !important;
+  color: #EDEDED !important;
+  font-family: 'IBM Plex Mono', monospace !important;
+  padding: 0.125rem 0.25rem !important;
+  font-size: 0.875em !important;
+}
+
+/* Quotes */
+.notion-quote {
+  border-left: 2px solid #333333 !important;
+  color: #EDEDED !important;
+  background: transparent !important;
+  padding-left: 1rem !important;
+}
+
+/* Callouts */
+.notion-callout {
+  background: #0a0a0a !important;
+  border: 1px solid #333333 !important;
+  border-radius: 0 !important;
+}
+
+.notion-callout-text {
+  color: #EDEDED !important;
+}
+
+/* Dividers */
+.notion-hr {
+  border-color: #333333 !important;
+}
+
+/* Tables */
+.notion-table {
+  border: 1px solid #333333 !important;
+  border-radius: 0 !important;
+}
+
+.notion-table-cell {
+  border: 1px solid #333333 !important;
+  color: #EDEDED !important;
+}
+
+.notion-table-header {
+  background: #0a0a0a !important;
+}
+
+/* Toggle */
+.notion-toggle {
+  border: 1px solid #333333 !important;
+  border-radius: 0 !important;
+}
+
+.notion-toggle-summary {
+  color: #EDEDED !important;
+}
+
+/* Remove collection view cards styling */
+.notion-collection-card {
+  background: #0a0a0a !important;
+  border: 1px solid #333333 !important;
+  border-radius: 0 !important;
+}
+
+.notion-collection-card:hover {
+  background: #111111 !important;
+}
+
+/* Remove default Notion shadows */
+.notion-page-cover,
+.notion-page-icon-wrapper,
+.notion-collection-view-cover {
+  display: none !important;
+}
+
+/* Remove page icon */
+.notion-page-icon {
+  display: none !important;
+}
+
+/* Remove default padding/margins */
+.notion-page {
+  padding: 0 !important;
+}
+
+.notion-body {
+  padding: 0 !important;
+}
