@@ -1,5 +1,6 @@
 import { Github, Twitter, Mail, Linkedin } from 'lucide-react';
 import NotionRenderer from '@/components/NotionRenderer';
+import UniversalLinkHandler from '@/components/UniversalLinkHandler';
 import { getLatestInsight, getUpdates, type NotionPage } from '@/lib/notion';
 
 const NOTION_PAGE_ID = process.env.NOTION_PAGE_ID || '';
@@ -115,19 +116,26 @@ export default async function Home() {
               updates.map((update) => (
                 <div
                   key={update.id}
-                  className="border border-border p-4 hover:bg-border/10 transition-colors cursor-pointer"
+                  className="border border-border p-4 space-y-3"
                 >
-                  <h3 className="font-bold mb-2">{update.title}</h3>
-                  <p className="text-xs text-text/60 mb-2">
+                  <h3 className="font-bold">{update.title}</h3>
+                  <p className="text-xs text-text/60">
                     {new Date(update.date).toLocaleDateString('en-US', {
                       year: 'numeric',
                       month: 'short',
                       day: 'numeric',
                     })}
                   </p>
-                  <span className="text-xs border border-border px-2 py-1">
+                  <span className="text-xs border border-border px-2 py-1 inline-block">
                     {update.type}
                   </span>
+                  {update.link && (
+                    <UniversalLinkHandler
+                      url={update.link}
+                      embedMode={update.embedMode}
+                      label="Visit Source"
+                    />
+                  )}
                 </div>
               ))
             ) : (

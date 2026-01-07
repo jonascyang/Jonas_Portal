@@ -14,6 +14,8 @@ export interface NotionPage {
   type: 'Insight' | 'Update';
   published: boolean;
   content: any;
+  link?: string;
+  embedMode?: boolean;
 }
 
 export async function getNotionData(pageId: string) {
@@ -49,6 +51,8 @@ export async function getNotionData(pageId: string) {
         const publishedPropId = propMap['Published'];
         const typePropId = propMap['Type'];
         const datePropId = propMap['Date'];
+        const linkPropId = propMap['Link'];
+        const embedModePropId = propMap['Embed Mode'];
 
         // Get all rows in the collection
         if (recordMap.block) {
@@ -58,8 +62,14 @@ export async function getNotionData(pageId: string) {
               // Extract properties from the block
               const properties = blockValue.properties || {};
 
+              const readCheckbox = (propId?: string) => {
+                if (!propId) return false;
+                const rawValue = properties[propId]?.[0]?.[0];
+                return rawValue === 'Yes' || rawValue === 'True' || rawValue === 'true';
+              };
+
               // Check if published - checkbox is true if it exists and is checked
-              const published = publishedPropId ? properties[publishedPropId]?.[0]?.[0] === 'Yes' : true;
+              const published = publishedPropId ? readCheckbox(publishedPropId) : true;
 
               // Get type
               let type: 'Insight' | 'Update' = 'Update';
@@ -81,6 +91,10 @@ export async function getNotionData(pageId: string) {
               }
 
               if (published) {
+                const linkRaw = linkPropId ? properties[linkPropId]?.[0]?.[0] : '';
+                const link = typeof linkRaw === 'string' ? linkRaw : '';
+                const embedMode = readCheckbox(embedModePropId);
+
                 items.push({
                   id: blockId,
                   title,
@@ -88,6 +102,8 @@ export async function getNotionData(pageId: string) {
                   type,
                   published,
                   content: recordMap,
+                  link,
+                  embedMode,
                 });
               }
             }
