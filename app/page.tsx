@@ -1,13 +1,26 @@
-import { GitHub, Twitter, Mail, Linkedin } from 'lucide-react';
+import { Github, Twitter, Mail, Linkedin } from 'lucide-react';
 import NotionRenderer from '@/components/NotionRenderer';
-import { getLatestInsight, getUpdates, getPageRecordMap } from '@/lib/notion';
+import { getLatestInsight, getUpdates, type NotionPage } from '@/lib/notion';
 
 const NOTION_PAGE_ID = process.env.NOTION_PAGE_ID || '';
 
 export default async function Home() {
-  // Fetch data from Notion
-  const latestInsight = await getLatestInsight(NOTION_PAGE_ID);
-  const updates = await getUpdates(NOTION_PAGE_ID);
+  // Fetch data from Notion (with fallback for missing env var)
+  let latestInsight: NotionPage | null = null;
+  let updates: NotionPage[] = [];
+
+  if (!NOTION_PAGE_ID) {
+    console.warn('NOTION_PAGE_ID environment variable is not set');
+  } else {
+    try {
+      [latestInsight, updates] = await Promise.all([
+        getLatestInsight(NOTION_PAGE_ID),
+        getUpdates(NOTION_PAGE_ID),
+      ]);
+    } catch (error) {
+      console.error('Failed to fetch Notion data:', error);
+    }
+  }
 
   return (
     <main className="min-h-screen bg-background text-text font-mono">
@@ -36,7 +49,7 @@ export default async function Home() {
                   className="p-2 border border-border hover:bg-border/20 transition-colors"
                   aria-label="GitHub"
                 >
-                  <GitHub size={20} />
+                  <Github size={20} />
                 </a>
                 <a
                   href="https://twitter.com"

@@ -1,7 +1,6 @@
 'use client';
 
 import { NotionRenderer as ReactNotionRenderer } from 'react-notion-x';
-import { Code, Equation, Collection } from 'react-notion-x';
 import '@/styles/notion.css';
 
 interface NotionRendererProps {
@@ -14,11 +13,6 @@ export default function NotionRenderer({ recordMap, className = '' }: NotionRend
     <div className={`notion-renderer ${className}`}>
       <ReactNotionRenderer
         recordMap={recordMap}
-        components={{
-          Code,
-          Equation,
-          Collection,
-        }}
         fullPage={false}
         disableHeader
         showCollectionViewDropdown={false}

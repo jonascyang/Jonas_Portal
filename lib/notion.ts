@@ -1,7 +1,10 @@
 import { NotionAPI } from 'notion-client';
 
+// Get Notion page ID from environment variable
+const NOTION_PAGE_ID = process.env.NOTION_PAGE_ID || '';
+
 const notion = new NotionAPI({
-  authToken: process.env.NOTION_TOKEN,
+  authToken: process.env.NOTION_TOKEN || undefined,
 });
 
 export interface NotionPage {
@@ -29,15 +32,16 @@ export async function getNotionData(pageId: string) {
     );
 
     for (const view of collectionViews) {
-      const viewId = view.value.id;
-      const collectionId = view.value.collection_id;
+      const viewValue = (view as any).value;
+      const viewId = viewValue.id;
+      const collectionId = viewValue.collection_id;
 
       if (recordMap.collection && recordMap.collection[collectionId]) {
         const collection = recordMap.collection[collectionId];
         const schema = collection.value.schema;
 
         // Get all rows in the collection
-        const collectionRows = recordMap.collection_view?.[viewId]?.format?.collection_pointer;
+        const collectionRows = (recordMap as any).collection_view?.[viewId]?.format?.collection_pointer;
         if (recordMap.block) {
           for (const [blockId, block] of Object.entries(recordMap.block)) {
             const blockValue = (block as any).value;
