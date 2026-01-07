@@ -53,9 +53,11 @@ export default function UniversalLinkHandler({
 
   if (isTwitterUrl(url)) {
     return (
-      <div className="border border-border p-3">
+      <div className="border border-border bg-background p-3 md:p-4">
         {twitterId ? (
-          <TwitterTweetEmbed tweetId={twitterId} options={{ align: 'left' }} />
+          <div className="max-w-xl mx-auto">
+            <TwitterTweetEmbed tweetId={twitterId} options={{ align: 'left' }} />
+          </div>
         ) : (
           <LinkCard url={url} label="Visit Tweet" />
         )}
@@ -65,13 +67,26 @@ export default function UniversalLinkHandler({
 
   if (embedMode && !iframeFailed) {
     return (
-      <iframe
-        src={url}
-        title={label || 'Embedded content'}
-        className="w-full h-[600px] border border-border"
-        loading="lazy"
-        onError={() => setIframeFailed(true)}
-      />
+      <div className="border border-border bg-background">
+        <div className="flex items-center justify-between border-b border-border px-3 py-2 text-xs uppercase tracking-widest">
+          <span>Embedded</span>
+          <a
+            href={url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline underline-offset-4 hover:no-underline"
+          >
+            Open Original
+          </a>
+        </div>
+        <iframe
+          src={url}
+          title={label || 'Embedded content'}
+          className="w-full h-[560px]"
+          loading="lazy"
+          onError={() => setIframeFailed(true)}
+        />
+      </div>
     );
   }
 
